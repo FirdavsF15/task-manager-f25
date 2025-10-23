@@ -1,15 +1,10 @@
 import { useState } from 'react'
 import EditDescription from './EditDescription'
+import { useTaskContext } from './TaskContext'
 
-function Task({
-  description = '',
-  completed = false,
-  deleteTask,
-  index,
-  updateCompleted,
-  updateDescription,
-}) {
+function Task({ description = '', completed = false, index }) {
   const [editing, setEditing] = useState(false)
+  const { deleteTask, updateCompleted, updateDescription } = useTaskContext()
 
   const handleEdit = (index, description) => {
     updateDescription(index, description)

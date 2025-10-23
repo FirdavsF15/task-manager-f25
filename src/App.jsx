@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import './App.css'
-import { TaskForm, TaskList } from './components'
+import { TaskContext, TaskForm, TaskList, tasksReducer } from './components'
 import axios from 'axios'
 
 function App() {
-  const [taskList, setTaskList] = useState([])
+  // const [taskList, setTaskList] = useState([])
+  const [taskList, dispatch] = useReducer(tasksReducer, [])
 
   useEffect(() => {
     getTasks()
@@ -18,39 +19,42 @@ function App() {
 
       const { data } = response
 
-      setTaskList(data)
+      // setTaskList(data)
+      dispatch({
+        type: 'set_tasks',
+        tasks: data,
+      })
     } catch (error) {
       console.error('Something went wrong', error)
-      setTaskList([])
+      // setTaskList([])
+      dispatch({
+        type: 'set_tasks',
+        tasks: [],
+      })
     }
   }
 
   function deleteTask(index) {
-    const updatedTasks = taskList.filter((task, idx) => index !== idx)
-
-    setTaskList(updatedTasks)
+    dispatch({
+      type: 'delete_task',
+      index: index,
+    })
   }
 
   function addTask(description) {
-    const newTask = {
-      completed: false,
+    dispatch({
+      type: 'add_task',
       description: description,
-    }
-
-    const updatedTasks = [...taskList, newTask]
-
-    setTaskList(updatedTasks)
+    })
   }
 
   function updateTaskField(index, field, value) {
-    const updatedTasks = taskList.map((task, idx) => {
-      if (index == idx) {
-        return { ...task, [field]: value }
-      }
-      return task
+    dispatch({
+      type: 'update_task',
+      index,
+      field,
+      value,
     })
-
-    setTaskList(updatedTasks)
   }
 
   function updateCompleted(index, completed) {
@@ -62,15 +66,18 @@ function App() {
   }
 
   return (
-    <>
-      <TaskForm addTask={addTask} />
-      <TaskList
-        tasks={taskList}
-        deleteTask={deleteTask}
-        updateCompleted={updateCompleted}
-        updateDescription={updateDescription}
-      />
-    </>
+    <TaskContext
+      value={{
+        tasks: taskList,
+        addTask,
+        deleteTask,
+        updateCompleted,
+        updateDescription,
+      }}
+    >
+      <TaskForm />
+      <TaskList />
+    </TaskContext>
   )
 }
 

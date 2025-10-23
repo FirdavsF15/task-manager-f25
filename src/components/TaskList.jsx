@@ -1,19 +1,12 @@
 import Task from './Task'
+import { useTaskContext } from './TaskContext'
 
-function TaskList({ tasks, deleteTask, updateCompleted, updateDescription }) {
+function TaskList() {
+  const { tasks } = useTaskContext()
   return (
     <div>
       {tasks.length > 0 ? (
-        tasks.map((task, index) => (
-          <Task
-            key={index}
-            {...task}
-            index={index}
-            deleteTask={deleteTask}
-            updateCompleted={updateCompleted}
-            updateDescription={updateDescription}
-          />
-        ))
+        tasks.map((task, index) => <Task key={index} {...task} index={index} />)
       ) : (
         <p>No tasks to display!</p>
       )}

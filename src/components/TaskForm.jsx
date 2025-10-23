@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
+import { useTaskContext } from './TaskContext'
 
-function TaskForm({ addTask }) {
+function TaskForm() {
   const [description, setDescription] = useState('')
+  const { addTask } = useTaskContext()
 
   const inputRef = useRef(null)
 
