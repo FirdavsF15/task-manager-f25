@@ -4,7 +4,6 @@ import { useTaskContext } from './TaskContext'
 function TaskForm() {
   const [description, setDescription] = useState('')
   const { addTask } = useTaskContext()
-
   const inputRef = useRef(null)
 
   useEffect(() => {

@@ -1,11 +1,15 @@
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect } from 'react'
 import './App.css'
-import { TaskContext, TaskForm, TaskList, tasksReducer } from './components'
+import { TaskContext, TaskForm, TaskList } from './components'
 import axios from 'axios'
+import { tasksSlice } from './redux/tasksSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 function App() {
-  // const [taskList, setTaskList] = useState([])
-  const [taskList, dispatch] = useReducer(tasksReducer, [])
+  const taskList = useSelector((state) => state.tasks)
+  const dispatch = useDispatch()
+
+  const actions = tasksSlice.actions
 
   useEffect(() => {
     getTasks()
@@ -19,42 +23,24 @@ function App() {
 
       const { data } = response
 
-      // setTaskList(data)
-      dispatch({
-        type: 'set_tasks',
-        tasks: data,
-      })
+      dispatch(actions.setTasks(data))
     } catch (error) {
       console.error('Something went wrong', error)
-      // setTaskList([])
-      dispatch({
-        type: 'set_tasks',
-        tasks: [],
-      })
+
+      dispatch(actions.setTasks([]))
     }
   }
 
   function deleteTask(index) {
-    dispatch({
-      type: 'delete_task',
-      index: index,
-    })
+    dispatch(actions.deleteTask(index))
   }
 
   function addTask(description) {
-    dispatch({
-      type: 'add_task',
-      description: description,
-    })
+    dispatch(actions.addTask(description))
   }
 
   function updateTaskField(index, field, value) {
-    dispatch({
-      type: 'update_task',
-      index,
-      field,
-      value,
-    })
+    dispatch(actions.updateTask({ index, field, value }))
   }
 
   function updateCompleted(index, completed) {
