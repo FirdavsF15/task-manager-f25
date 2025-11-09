@@ -5,3 +5,5 @@ export { default as TaskForm } from './TaskForm'
 export { TaskContext, useTaskContext } from './TaskContext'
 
 export { tasksReducer } from './tasksReducer'
+
+export { tasksSlice } from '../redux/tasksSlice'
