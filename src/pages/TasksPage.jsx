@@ -52,7 +52,7 @@ function TasksPage() {
   }
 
   return (
-    <Box>
+    <Box padding={4}>
       <TaskContext
         value={{
           tasks: taskList,
