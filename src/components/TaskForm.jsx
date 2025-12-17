@@ -1,11 +1,8 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { TaskContext } from "./TaskContext";
+import { useEffect, useRef, useState } from "react";
 
-function TaskForm() {
+function TaskForm({ addTask }) {
    // Creates a state to store our description input value
    const [description, setDescription] = useState("");
-
-   const { addTask } = useContext(TaskContext);
 
    /*
     * The useRef hook allows us to reference a value not needed for rendering
@@ -30,7 +27,7 @@ function TaskForm() {
 
    return (
       <form onSubmit={handleSubmit}>
-         <label htmlFor="description">Description: </label>
+         <label htmlFor="description">Description</label>
          <input
             type="text"
             id="description"
